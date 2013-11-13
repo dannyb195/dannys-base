@@ -1,0 +1,24 @@
+/*@media (max-width: 768px) and (orientation : portrait) {*/
+@media (max-width: 1000px) {
+	#container {
+		width: 43.125em; /*690 px*/
+	}
+	#content {
+		width: 100%;
+	}
+	#sidebar {
+		width: 43.125rem; /*690 px*/
+		text-align: center;
+		border: none;
+	}
+	.widget-sidebar {
+		float: left;
+		width: 100%;
+	}
+	#sidebar ul, #sidebar ul li {
+		width: 100%;
+		float: left;
+		clear: both;
+		text-align: center;
+	}
+}
