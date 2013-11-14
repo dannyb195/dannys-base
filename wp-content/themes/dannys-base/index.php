@@ -8,6 +8,12 @@
 			<p class="comments"><a href="<?php comments_link(); ?>"><?php comments_number('leave a comment','one comment','% comments'); ?></a></p>
 
 			<div class="main entry-content group">
+				<?php if(has_post_thumbnail()) {
+					$img_attr = array(
+						'class'	=> 'center',
+						);
+					the_post_thumbnail('full', $img_attr);
+				};?>
 				<?php the_content('Read the rest of this entry &raquo;'); ?>
 			</div>
 

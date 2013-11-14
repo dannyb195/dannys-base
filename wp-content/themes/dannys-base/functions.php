@@ -1,7 +1,12 @@
 <?php
 add_editor_style('editor-style.css');
-?>
-<?php
+
+function theme_scripts() {
+	wp_enqueue_script( 'dannys_base', get_stylesheet_directory_uri() . '/js/theme.js', array( 'jquery' ), false, false);
+}
+
+add_action( 'wp_enqueue_scripts', 'theme_scripts' );
+
 /**
  * Sets the post excerpt length to 40 words.
  *
@@ -48,13 +53,13 @@ add_filter( 'get_the_excerpt', 'dannysBase_custom_excerpt_more' );
 <?php
 //add Featured Image Support
 if ( function_exists( 'add_theme_support' ) ) { 
-  add_theme_support( 'post-thumbnails' ); 
+	add_theme_support( 'post-thumbnails' ); 
 }
 if ( function_exists( 'add_theme_support' ) ) { 
-  add_theme_support( 'automatic-feed-links' ); 
+	add_theme_support( 'automatic-feed-links' ); 
 }
 // This theme uses wp_nav_menu() in one location.
-	register_nav_menu( 'primary', __( 'Primary Menu', 'dannysBase' ) );
+register_nav_menu( 'primary', __( 'Primary Menu', 'dannysBase' ) );
 ?>
 <?php
 //start of the theme options.  stripped down version of tutorial found at http://net.tutsplus.com/tutorials/wordpress/how-to-create-a-better-wordpress-options-panel/
@@ -63,43 +68,43 @@ $shortname = "ga";
 
 $options = array (
 
-array( "name" => $themename." Options",
-	"type" => "title"),
+	array( "name" => $themename." Options",
+		"type" => "title"),
 
-array( "name" => "General",
-	"type" => "section"),
-array( "type" => "open"),
+	array( "name" => "General",
+		"type" => "section"),
+	array( "type" => "open"),
 
-array( "name" => "Turn Of Comments?",
-	"desc" => "Select Yes to turn off comment across your site",
-	"id" => $shortname."_comments_off",
-	"type" => "select",
-	"options" => array("No", "Yes"),
-	"std" => "No"),
+	array( "name" => "Turn Of Comments?",
+		"desc" => "Select Yes to turn off comment across your site",
+		"id" => $shortname."_comments_off",
+		"type" => "select",
+		"options" => array("No", "Yes"),
+		"std" => "No"),
 
-array( "name" => "Default Thumbnail image",
-	"desc" => "Upload a Default Thumbnaeil image and paste the URL here",
-	"id" => $shortname."_default_thumbnail",
-	"type" => "text",
-	"std" => ""),	
+	array( "name" => "Default Thumbnail image",
+		"desc" => "Upload a Default Thumbnaeil image and paste the URL here",
+		"id" => $shortname."_default_thumbnail",
+		"type" => "text",
+		"std" => ""),	
 	
-array( "type" => "close"),
+	array( "type" => "close"),
 
-array( "name" => "Header",
-	"type" => "section"),
-array( "type" => "open"),
+	array( "name" => "Header",
+		"type" => "section"),
+	array( "type" => "open"),
 
-array( "name" => "Header Tag Text",
-	"desc" => "Enter text used in the upper right screen tag",
-	"id" => $shortname."_header_text",
-	"type" => "text",
-	"std" => ""),
+	array( "name" => "Header Tag Text",
+		"desc" => "Enter text used in the upper right screen tag",
+		"id" => $shortname."_header_text",
+		"type" => "text",
+		"std" => ""),
 
-array( "name" => "Header Tag Link",
-	"desc" => "Enter the Complete (including 'http://www.' URL destination for the Tag Link",
-	"id" => $shortname."_header_link",
-	"type" => "text",
-	"std" => ""),
+	array( "name" => "Header Tag Link",
+		"desc" => "Enter the Complete (including 'http://www.' URL destination for the Tag Link",
+			"id" => $shortname."_header_link",
+			"type" => "text",
+			"std" => ""),
 
 array( "type" => "close"), //close header panel
 
@@ -112,7 +117,7 @@ array( "name" => "Footer copyright text",
 	"id" => $shortname."_footer_text",
 	"type" => "textarea",
 	"std" => ""),
-	
+
 array( "name" => "Google Analytics Code",
 	"desc" => "You can paste your Google Analytics or other tracking code in this box. This will be automatically added to the footer.",
 	"id" => $shortname."_ga_code",
@@ -143,218 +148,218 @@ array( "type" => "close") //close footer panel
 
 function mytheme_add_admin() {
 
-global $themename, $shortname, $options;
+	global $themename, $shortname, $options;
 
-if ( $_GET['page'] == basename(__FILE__) ) {
+	if ( $_GET['page'] == basename(__FILE__) ) {
 
-	if ( 'save' == $_REQUEST['action'] ) {
+		if ( 'save' == $_REQUEST['action'] ) {
 
-		foreach ($options as $value) {
-		update_option( $value['id'], $_REQUEST[ $value['id'] ] ); }
+			foreach ($options as $value) {
+				update_option( $value['id'], $_REQUEST[ $value['id'] ] ); }
 
-foreach ($options as $value) {
-	if( isset( $_REQUEST[ $value['id'] ] ) ) { update_option( $value['id'], $_REQUEST[ $value['id'] ]  ); } else { delete_option( $value['id'] ); } }
+				foreach ($options as $value) {
+					if( isset( $_REQUEST[ $value['id'] ] ) ) { update_option( $value['id'], $_REQUEST[ $value['id'] ]  ); } else { delete_option( $value['id'] ); } }
 
-	header("Location: admin.php?page=functions.php&saved=true");
-die;
+					header("Location: admin.php?page=functions.php&saved=true");
+					die;
 
-}
-else if( 'reset' == $_REQUEST['action'] ) {
+				}
+				else if( 'reset' == $_REQUEST['action'] ) {
 
-	foreach ($options as $value) {
-		delete_option( $value['id'] ); }
+					foreach ($options as $value) {
+						delete_option( $value['id'] ); }
 
-	header("Location: admin.php?page=functions.php&reset=true");
-die;
+						header("Location: admin.php?page=functions.php&reset=true");
+						die;
 
-}
-}
+					}
+				}
 
-add_theme_page($themename, $themename, 'administrator', basename(__FILE__), 'mytheme_admin');
-}
+				add_theme_page($themename, $themename, 'administrator', basename(__FILE__), 'mytheme_admin');
+			}
 
-function mytheme_add_init() {
-$file_dir=get_template_directory_uri();
-wp_enqueue_style("functions", $file_dir."/functions/functions.css", false, "1.0", "all");
-wp_enqueue_script("rm_script", $file_dir."/functions/rm_script.js", false, "1.0");
-}
+			function mytheme_add_init() {
+				$file_dir=get_template_directory_uri();
+				wp_enqueue_style("functions", $file_dir."/functions/functions.css", false, "1.0", "all");
+				wp_enqueue_script("rm_script", $file_dir."/functions/rm_script.js", false, "1.0");
+			}
 
-function mytheme_admin() {
+			function mytheme_admin() {
 
-global $themename, $shortname, $options;
-$i=0;
+				global $themename, $shortname, $options;
+				$i=0;
 
-if ( $_REQUEST['saved'] ) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' settings saved.</strong></p></div>';
-if ( $_REQUEST['reset'] ) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' settings reset.</strong></p></div>';
+				if ( $_REQUEST['saved'] ) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' settings saved.</strong></p></div>';
+				if ( $_REQUEST['reset'] ) echo '<div id="message" class="updated fade"><p><strong>'.$themename.' settings reset.</strong></p></div>';
 
-?>
-<div class="wrap rm_wrap">
-<h2><?php echo $themename; ?> Settings</h2>
+				?>
+				<div class="wrap rm_wrap">
+					<h2><?php echo $themename; ?> Settings</h2>
 
-<div class="rm_opts">
-<form method="post">
+					<div class="rm_opts">
+						<form method="post">
 
-<?php foreach ($options as $value) {
-switch ( $value['type'] ) {
+							<?php foreach ($options as $value) {
+								switch ( $value['type'] ) {
 
-case "open":
-?>
+									case "open":
+									?>
 
-<?php break;
+									<?php break;
 
-case "close":
-?>
+									case "close":
+									?>
 
-</div>
-</div>
-<br />
+								</div>
+							</div>
+							<br />
 
-<?php break;
+							<?php break;
 
-case "title":
-?>
-<p>To easily use the <?php echo $themename;?> theme, you can use the menu below.</p>
+							case "title":
+							?>
+							<p>To easily use the <?php echo $themename;?> theme, you can use the menu below.</p>
 
-<?php break;
+							<?php break;
 
-case 'text':
-?>
+							case 'text':
+							?>
 
-<div class="rm_input rm_text">
-	<label for="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></label>
- 	<input name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>" type="<?php echo $value['type']; ?>" value="<?php if ( get_option( $value['id'] ) != "") { echo stripslashes(get_option( $value['id'])  ); } else { echo $value['std']; } ?>" />
- <small><?php echo $value['desc']; ?></small><div class="clearfix"></div>
+							<div class="rm_input rm_text">
+								<label for="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></label>
+								<input name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>" type="<?php echo $value['type']; ?>" value="<?php if ( get_option( $value['id'] ) != "") { echo stripslashes(get_option( $value['id'])  ); } else { echo $value['std']; } ?>" />
+								<small><?php echo $value['desc']; ?></small><div class="clearfix"></div>
 
- </div>
-<?php
-break;
+							</div>
+							<?php
+							break;
 
-case 'textarea':
-?>
+							case 'textarea':
+							?>
 
-<div class="rm_input rm_textarea">
-	<label for="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></label>
- 	<textarea name="<?php echo $value['id']; ?>" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_option( $value['id'] ) != "") { echo stripslashes(get_option( $value['id']) ); } else { echo $value['std']; } ?></textarea>
- <small><?php echo $value['desc']; ?></small><div class="clearfix"></div>
+							<div class="rm_input rm_textarea">
+								<label for="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></label>
+								<textarea name="<?php echo $value['id']; ?>" type="<?php echo $value['type']; ?>" cols="" rows=""><?php if ( get_option( $value['id'] ) != "") { echo stripslashes(get_option( $value['id']) ); } else { echo $value['std']; } ?></textarea>
+								<small><?php echo $value['desc']; ?></small><div class="clearfix"></div>
 
- </div>
+							</div>
 
-<?php
-break;
+							<?php
+							break;
 
-case 'select':
-?>
+							case 'select':
+							?>
 
-<div class="rm_input rm_select">
-	<label for="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></label>
+							<div class="rm_input rm_select">
+								<label for="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></label>
 
-<select name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>">
-<?php foreach ($value['options'] as $option) { ?>
-		<option <?php if (get_option( $value['id'] ) == $option) { echo 'selected="selected"'; } ?>><?php echo $option; ?></option><?php } ?>
-</select>
+								<select name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>">
+									<?php foreach ($value['options'] as $option) { ?>
+									<option <?php if (get_option( $value['id'] ) == $option) { echo 'selected="selected"'; } ?>><?php echo $option; ?></option><?php } ?>
+								</select>
 
-	<small><?php echo $value['desc']; ?></small><div class="clearfix"></div>
-</div>
-<?php
-break;
+								<small><?php echo $value['desc']; ?></small><div class="clearfix"></div>
+							</div>
+							<?php
+							break;
 
-case "checkbox":
-?>
+							case "checkbox":
+							?>
 
-<div class="rm_input rm_checkbox">
-	<label for="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></label>
+							<div class="rm_input rm_checkbox">
+								<label for="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></label>
 
-<?php if(get_option($value['id'])){ $checked = "checked=\"checked\""; }else{ $checked = "";} ?>
-<input type="checkbox" name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>" value="true" <?php echo $checked; ?> />
+								<?php if(get_option($value['id'])){ $checked = "checked=\"checked\""; }else{ $checked = "";} ?>
+								<input type="checkbox" name="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>" value="true" <?php echo $checked; ?> />
 
-	<small><?php echo $value['desc']; ?></small><div class="clearfix"></div>
- </div>
-<?php break;
+								<small><?php echo $value['desc']; ?></small><div class="clearfix"></div>
+							</div>
+							<?php break;
 
-case "section":
+							case "section":
 
-$i++;
+							$i++;
 
-?>
+							?>
 
-<div class="rm_section">
-<div class="rm_title"><h3><img src="<?php echo get_template_directory_uri();?>/functions/images/trans.png" class="inactive" alt=""><?php echo $value['name']; ?></h3><span class="submit"><input name="save<?php echo $i; ?>" type="submit" value="Save changes" />
-</span><div class="clearfix"></div></div>
-<div class="rm_options">
+							<div class="rm_section">
+								<div class="rm_title"><h3><img src="<?php echo get_template_directory_uri();?>/functions/images/trans.png" class="inactive" alt=""><?php echo $value['name']; ?></h3><span class="submit"><input name="save<?php echo $i; ?>" type="submit" value="Save changes" />
+								</span><div class="clearfix"></div></div>
+								<div class="rm_options">
 
-<?php break;
+									<?php break;
 
-}
-}
-?>
+								}
+							}
+							?>
 
-<input type="hidden" name="action" value="save" />
-</form>
-<form method="post">
-<p class="submit">
-<input name="reset" type="submit" value="Reset" />
-<input type="hidden" name="action" value="reset" />
-</p>
-</form>
-<div style="font-size:9px; margin-bottom:10px;">Icons: <a href="http://www.woothemes.com/2009/09/woofunction/">WooFunction</a></div>
- </div> 
+							<input type="hidden" name="action" value="save" />
+						</form>
+						<form method="post">
+							<p class="submit">
+								<input name="reset" type="submit" value="Reset" />
+								<input type="hidden" name="action" value="reset" />
+							</p>
+						</form>
+						<div style="font-size:9px; margin-bottom:10px;">Icons: <a href="http://www.woothemes.com/2009/09/woofunction/">WooFunction</a></div>
+					</div> 
 
-<?php
-}
+					<?php
+				}
 
-?>
-<?php
-add_action('admin_init', 'mytheme_add_init');
-add_action('admin_menu', 'mytheme_add_admin');
+				?>
+				<?php
+				add_action('admin_init', 'mytheme_add_init');
+				add_action('admin_menu', 'mytheme_add_admin');
 //end of theme options?>
 <?php
 //stock functions of Journalist
 if ( function_exists('register_sidebar') )
-    register_sidebar(array(
-        'before_widget' => '<div class="widget-sidebar">',
-        'after_widget' => '</div>',
-        'before_title' => '<h3>',
-        'after_title' => '</h3>',
-    ));
-	
-	register_sidebar( array(
-		'name' => __( 'Footer Area One', 'dannysBase' ),
-		'id' => 'sidebar-3',
-		'description' => __( 'An optional widget area for your site footer', 'dannysBase' ),
-		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-		'after_widget' => "</aside>",
-		'before_title' => '<h3 class="widget-title">',
+	register_sidebar(array(
+		'before_widget' => '<div class="widget-sidebar">',
+		'after_widget' => '</div>',
+		'before_title' => '<h3>',
 		'after_title' => '</h3>',
+		));
+
+register_sidebar( array(
+	'name' => __( 'Footer Area One', 'dannysBase' ),
+	'id' => 'sidebar-3',
+	'description' => __( 'An optional widget area for your site footer', 'dannysBase' ),
+	'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+	'after_widget' => "</aside>",
+	'before_title' => '<h3 class="widget-title">',
+	'after_title' => '</h3>',
 	) );
 
-	register_sidebar( array(
-		'name' => __( 'Footer Area Two', 'dannysBase' ),
-		'id' => 'sidebar-4',
-		'description' => __( 'An optional widget area for your site footer', 'Dannys Base' ),
-		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-		'after_widget' => "</aside>",
-		'before_title' => '<h3 class="widget-title">',
-		'after_title' => '</h3>',
+register_sidebar( array(
+	'name' => __( 'Footer Area Two', 'dannysBase' ),
+	'id' => 'sidebar-4',
+	'description' => __( 'An optional widget area for your site footer', 'Dannys Base' ),
+	'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+	'after_widget' => "</aside>",
+	'before_title' => '<h3 class="widget-title">',
+	'after_title' => '</h3>',
 	) );
 
-	register_sidebar( array(
-		'name' => __( 'Footer Area Three', 'dannysBase' ),
-		'id' => 'sidebar-5',
-		'description' => __( 'An optional widget area for your site footer', 'Dannys Base' ),
-		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-		'after_widget' => "</aside>",
-		'before_title' => '<h3 class="widget-title">',
-		'after_title' => '</h3>',
+register_sidebar( array(
+	'name' => __( 'Footer Area Three', 'dannysBase' ),
+	'id' => 'sidebar-5',
+	'description' => __( 'An optional widget area for your site footer', 'Dannys Base' ),
+	'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+	'after_widget' => "</aside>",
+	'before_title' => '<h3 class="widget-title">',
+	'after_title' => '</h3>',
 	) );
-	
-	register_sidebar( array(
-		'name' => __( 'Footer Area Four', 'dannysBase' ),
-		'id' => 'sidebar-6',
-		'description' => __( 'An optional widget area for your site footer', 'Dannys Base' ),
-		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-		'after_widget' => "</aside>",
-		'before_title' => '<h3 class="widget-title">',
-		'after_title' => '</h3>',
+
+register_sidebar( array(
+	'name' => __( 'Footer Area Four', 'dannysBase' ),
+	'id' => 'sidebar-6',
+	'description' => __( 'An optional widget area for your site footer', 'Dannys Base' ),
+	'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+	'after_widget' => "</aside>",
+	'before_title' => '<h3 class="widget-title">',
+	'after_title' => '</h3>',
 	) );
 
 
@@ -363,7 +368,7 @@ $themecolors = array(
 	'border' => '777',
 	'text' => '1c1c1c',
 	'link' => '004276',
-);
+	);
 
 /**
  * Count the number of footer sidebars to enable dynamic classes for the footer
@@ -379,7 +384,7 @@ function dannysBase_footer_sidebar_class() {
 
 	if ( is_active_sidebar( 'sidebar-5' ) )
 		$count++;
-		
+
 	if ( is_active_sidebar( 'sidebar-6' ) )
 		$count++;
 
@@ -387,17 +392,17 @@ function dannysBase_footer_sidebar_class() {
 
 	switch ( $count ) {
 		case '1':
-			$class = 'one';
-			break;
+		$class = 'one';
+		break;
 		case '2':
-			$class = 'two';
-			break;
+		$class = 'two';
+		break;
 		case '3':
-			$class = 'three';
-			break;
+		$class = 'three';
+		break;
 		case '4':
-			$class = 'four';
-			break;
+		$class = 'four';
+		break;
 	}
 
 	if ( $class )
@@ -452,20 +457,20 @@ if ( ! function_exists( 'dannysBase_comment' ) ) :
 function dannysBase_comment( $comment, $args, $depth ) {
 	$GLOBALS['comment'] = $comment;
 	switch ( $comment->comment_type ) :
-		case 'pingback' :
-		case 'trackback' :
+	case 'pingback' :
+	case 'trackback' :
 	?>
 	<li class="post pingback">
 		<p><?php _e( 'Pingback:', 'dannysBase' ); ?> <?php comment_author_link(); ?><?php edit_comment_link( __( 'Edit', 'dannysBase' ), '<span class="edit-link">', '</span>' ); ?></p>
-	<?php
-			break;
+		<?php
+		break;
 		default :
-	?>
-	<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
-		<article id="comment-<?php comment_ID(); ?>" class="comment">
-			<footer class="comment-meta">
-				<div class="comment-author vcard">
-					<?php
+		?>
+		<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
+			<article id="comment-<?php comment_ID(); ?>" class="comment">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<?php
 						$avatar_size = 68;
 						if ( '0' != $comment->comment_parent )
 							$avatar_size = 39;
@@ -480,29 +485,29 @@ function dannysBase_comment( $comment, $args, $depth ) {
 								get_comment_time( 'c' ),
 								/* translators: 1: date, 2: time */
 								sprintf( __( '%1$s at %2$s', 'dannysBase' ), get_comment_date(), get_comment_time() )
-							)
-						);
-					?>
+								)
+							);
+							?>
 
-					<?php edit_comment_link( __( 'Edit', 'dannysBase' ), '<span class="edit-link">', '</span>' ); ?>
-				</div><!-- .comment-author .vcard -->
+							<?php edit_comment_link( __( 'Edit', 'dannysBase' ), '<span class="edit-link">', '</span>' ); ?>
+						</div><!-- .comment-author .vcard -->
 
-				<?php if ( $comment->comment_approved == '0' ) : ?>
-					<em class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'dannysBase' ); ?></em>
-					<br />
-				<?php endif; ?>
+						<?php if ( $comment->comment_approved == '0' ) : ?>
+							<em class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'dannysBase' ); ?></em>
+							<br />
+						<?php endif; ?>
 
-			</footer>
+					</footer>
 
-			<div class="comment-content"><?php comment_text(); ?></div>
+					<div class="comment-content"><?php comment_text(); ?></div>
 
-			<div class="reply">
-				<?php comment_reply_link( array_merge( $args, array( 'reply_text' => __( 'Reply <span>&darr;</span>', 'dannysBase' ), 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
-			</div><!-- .reply -->
-		</article><!-- #comment-## -->
+					<div class="reply">
+						<?php comment_reply_link( array_merge( $args, array( 'reply_text' => __( 'Reply <span>&darr;</span>', 'dannysBase' ), 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
+					</div><!-- .reply -->
+				</article><!-- #comment-## -->
 
-	<?php
-			break;
-	endswitch;
-}
-endif; // ends check for dannysBase_comment()?>
+				<?php
+				break;
+				endswitch;
+			}
+			endif; // ends check for dannysBase_comment()?>
