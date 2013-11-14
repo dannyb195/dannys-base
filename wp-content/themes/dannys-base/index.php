@@ -10,7 +10,7 @@
 			<div class="main entry-content group">
 				<?php if(has_post_thumbnail()) {
 					$img_attr = array(
-						'class'	=> 'center',
+						'class'	=> 'aligncenter',
 						);
 					the_post_thumbnail('full', $img_attr);
 				};?>
